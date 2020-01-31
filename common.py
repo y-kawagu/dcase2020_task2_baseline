@@ -2,7 +2,6 @@
 # import python-library
 ########################################################################
 # default
-import pickle
 import sys
 import glob
 import argparse
@@ -29,9 +28,9 @@ __versions__ = "1.0.0"
 # argparse
 ########################################################################
 def command_line_chk():
-    parser = argparse.ArgumentParser(description='')
+    parser = argparse.ArgumentParser(description='Without option argument, it will not run properly.')
 
-    parser.add_argument('-v', '--version', action='store_true', help="show version")
+    parser.add_argument('-v', '--version', action='store_true', help="show application version")
     parser.add_argument('-e', '--eval', action='store_true', help="run mode Evaluation")
     parser.add_argument('-d', '--dev', action='store_true', help="run mode Development")
 
@@ -65,12 +64,12 @@ def yaml_load():
 """
 dev_directory : ./dev_data
 eval_directory : ./eval_data
-pickle_directory: ./pickle
 model_directory: ./model
 result_directory: ./result
 result_file: result.csv
 
-active_type: evaluation #evalation or development
+
+max_fpr : 0.1
 
 feature:
   n_mels: 64
@@ -78,13 +77,13 @@ feature:
   n_fft: 1024
   hop_length: 512
   power: 2.0
-  max_fpr : 0.1
+
 
 fit:
   compile:
     optimizer : adam
     loss : mean_squared_error
-  epochs : 50
+  epochs : 100
   batch_size : 512
   shuffle : True
   validation_split : 0.1

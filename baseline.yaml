@@ -1,10 +1,8 @@
 dev_directory : ./dev_data
 eval_directory : ./eval_data
-pickle_directory: ./pickle
 model_directory: ./model
 result_directory: ./result
 result_file: result.csv
-
 
 max_fpr : 0.1
 
