@@ -6,14 +6,24 @@
 ## Usage
 
 ### 1. unzip dataset
-
 ZENODOからdev_data.zipとeval_data.zipをダウンロードしてください。  
 ダウンロード後、dcase2020_baselineディレクトリで7zを利用して展開してください。
 
-
 - ./dcase2020_baseline
     - /dev_data
+        - /ToyCar
+        - /ToyConveyor
+        - /fan
+        - /pump
+        - /slider
+        - /valve
     - /eval_data
+        - /ToyCar
+        - /ToyConveyor
+        - /fan
+        - /pump
+        - /slider
+        - /valve
     - /00_train.py
     - /01_test.py
     - /common.py
@@ -27,7 +37,6 @@ ZENODOからdev_data.zipとeval_data.zipをダウンロードしてください�
 - `01_test.py`  , modelを利用して異常検出が実行されます。
 
 ### 3.Application arguments
-
 | Argument                    |                                   | Description                                                  |
 | --------------------------- | --------------------------------- | ------------------------------------------------------------ |
 | `-h`                        | `--help`                          | Application help.                                            |
@@ -90,7 +99,6 @@ Average	    0.791556255	0.726018126
 ```
 
 ## Dependency
-
 We develop the source code on Ubuntu 16.04 LTS and 18.04 LTS.
 In addition, we checked performing on **Ubuntu 16.04 LTS**, **18.04 LTS**, **Cent OS 7**, and **Windows 10**.
 
