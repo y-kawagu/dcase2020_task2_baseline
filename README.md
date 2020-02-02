@@ -14,7 +14,7 @@ The baseline system consists of two main scripts:
 ### 1. Clone repository
 Clone this repository from Github.
 
-### 2. Download development dataset (and evaluation dataset)
+### 2. Download datasets
 We will launch the datasets in three stages. 
 So, please download the datasets in each stage:
 - Development dataset
@@ -51,12 +51,13 @@ Unzip the downloaded files and make the directory structure as follows:
 ### 4. Change parameters
 You can change the parameters for feature extraction and model definition by editting `baseline.yaml`.
 
-### 5. Run training script
-Run the script for training `00_train.py`. 
-```
-$ python3.6 00_train.py [option]
-```
+### 5. Run training script (for development dataset)
+Run the training script `00_train.py`. 
 Use the option `-d` for the development dataset `dev_data`.
+```
+$ python3.6 00_train.py -d
+```
+Options:
 
 | Argument                    |                                   | Description                                                  | 
 | --------------------------- | --------------------------------- | ------------------------------------------------------------ | 
@@ -67,13 +68,13 @@ Use the option `-d` for the development dataset `dev_data`.
 
 `00_train.py` trains the models for each machine type and saves the trained models in the directory **model/**.
 
-### 6. Run test script
-Run the script for test `01_test.py`.
+### 6. Run test script (for development dataset)
+Run the test script `01_test.py`.
+Use the option `-d` for the development dataset `dev_data`.
 ```
-$ python3.6 01_test.py [option]
+$ python3.6 01_test.py -d
 ```
 The options for `01_test.py` are the same as those for `00_train.py`.
-Use the option `-d` for the development dataset `dev_data`.
 `01_test.py` calculates the anomaly scores for each .wav file in . 
 The csv files for each machine ID including the anomaly scores are saved in the directory **result/**.
 If the mode is "development", the script also makes the csv files including the AUCs and pAUCs for each machine ID. 
@@ -128,18 +129,21 @@ Average	    0.791556255	0.726018126
   ...
 ```
 
-### 5. Run training script for evaluation dataset
+### 5. Run training script for evaluation dataset (after launch)
 After the evaluation dataset for training is launched, download and unzip it.
 Run the training script `00_train.py` with the option `-e`. 
 ```
 $ python3.6 00_train.py -e
 ```
-The models are trained by using the evaluation dataset.
+The models are trained by using the evaluation dataset `eval_data`.
 
-### 6. Run test script for evaluation dataset
+### 6. Run test script for evaluation dataset (after launch)
 After the evaluation dataset for test is launched, download and unzip it.
 Run the test script `01_test.py` with the option `-e`. 
-The csv files for each machine ID including the anomaly scores are saved in the directory **result/**.
+```
+$ python3.6 01_test.py -e
+```
+The anomaly scores are calculated using the evaluation dataset `eval_data`, and the anomaly scores are saved as csv files in the directory **result/**.
 You can submit the csv files for the challenge.
 
 ## Dependency
