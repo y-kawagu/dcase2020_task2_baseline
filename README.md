@@ -39,7 +39,6 @@ Unzip the downloaded files and make the directory structure as follows:
     - /readme.md
 
 ### 3. Run script for training
-Application arguments
 | Argument                    |                                   | Description                                                  |
 | --------------------------- | --------------------------------- | ------------------------------------------------------------ |
 | `-h`                        | `--help`                          | Application help.                                            |
