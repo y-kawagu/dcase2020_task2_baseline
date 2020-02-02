@@ -2,9 +2,9 @@
 # import python-library
 ########################################################################
 # default
-import sys
 import glob
 import argparse
+import sys
 
 # additional
 import numpy
@@ -14,8 +14,8 @@ import librosa.feature
 import yaml
 
 # from import
-from keras.models import Model
-from keras.layers import Input, Dense
+#from keras.models import Model
+#from keras.layers import Input, Dense
 ########################################################################
 
 ########################################################################
@@ -37,7 +37,7 @@ def command_line_chk():
     args = parser.parse_args()
     if args.version:
         print("===============================")
-        print("DCASE_2020_baseline\nversion {}".format(__versions__))
+        print("DCASE 2020 task 2 baseline\nversion {}".format(__versions__))
         print("===============================\n")
     if args.eval ^ args.dev:
         if args.dev:
@@ -161,7 +161,7 @@ def file_to_vector_array(file_name,
     # 01 calculate the number of dimensions
     dims = n_mels * frames
 
-    # 02 generate melspectrogram using librosa (**kwargs == param["librosa"])
+    # 02 generate melspectrogram using librosa
     y, sr = file_load(file_name)
     mel_spectrogram = librosa.feature.melspectrogram(y=y,
                                                      sr=sr,
@@ -212,21 +212,3 @@ def select_dirs(param, mode):
 
 ########################################################################
 
-########################################################################
-# keras model
-########################################################################
-def keras_model(inputDim):
-    """
-    define the keras model
-    the model based on the simple dense auto encoder (64*64*8*64*64)
-    """
-    inputLayer = Input(shape=(inputDim,))
-    h = Dense(64, activation="relu")(inputLayer)
-    h = Dense(64, activation="relu")(h)
-    h = Dense(8, activation="relu")(h)
-    h = Dense(64, activation="relu")(h)
-    h = Dense(64, activation="relu")(h)
-    h = Dense(inputDim, activation=None)(h)
-
-    return Model(inputs=inputLayer, outputs=h)
-#########################################################################

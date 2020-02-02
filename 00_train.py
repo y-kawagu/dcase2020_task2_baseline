@@ -3,6 +3,7 @@
 ########################################################################
 import os
 import glob
+import sys
 ########################################################################
 
 
@@ -14,6 +15,7 @@ import numpy
 from tqdm import tqdm
 # original lib
 import common as com
+import keras_model
 ########################################################################
 
 
@@ -87,13 +89,13 @@ def list_to_vector_array(file_list,
         this parameter will be input into "desc" param @ tqdm.
 
     return : numpy.array( numpy.array( float ) )
-        training dataset (when generate the validation data, this function is not used.)
-        * dataset.shape = (total_dataset_size, fearture_vector_length)
+        vector array for training (this function is not used for test.)
+        * dataset.shape = (number of fearture vectors, dimensions of fearture vectors)
     """
-    # 01 calculate the number of dimensions
+    # calculate the number of dimensions
     dims = n_mels * frames
 
-    # 02 loop of file_to_vectorarray
+    # iterate file_to_vector_array()
     for idx in tqdm(range(len(file_list)), desc=msg):
         vector_array = com.file_to_vector_array(file_list[idx],
                                                   n_mels=n_mels,
@@ -114,17 +116,18 @@ def file_list_generator(target_dir,
     """
     target_dir : str
         base directory path of the dev_data or eval_data
-    train_dir_name : str (default="train")
-        directory name the training data located in
+    dir_name : str (default="train")
+        directory name containing training data
     ext : str (default="wav")
-        filename extension of audio files
+        file extension of audio files
 
     return :
         train_files : list [ str ]
             file list for training
     """
     com.logger.info("target_dir : {}".format(target_dir))
-    # training list generate
+
+    # generate training list
     files = sorted(glob.glob("{dir}/{dir_name}/*.{ext}".format(dir=target_dir, dir_name=dir_name, ext=ext)))
     if len(files) == 0: com.logger.exception(f'{"no_wav_data!!"}')
 
@@ -138,9 +141,13 @@ def file_list_generator(target_dir,
 # main 00_train.py
 ########################################################################
 if __name__ == "__main__":
+    # check mode
+    # "development": mode == True
+    # "evaluation": mode == False
     mode = com.command_line_chk()
     if mode is None:
-        exit(-1)
+        sys.exit(-1)
+        
     # make output directory
     os.makedirs(param["model_directory"], exist_ok=True)
 
@@ -151,18 +158,22 @@ if __name__ == "__main__":
     dirs = com.select_dirs(param=param, mode=mode)
 
     # loop of the base directory
-    for num, target_dir in enumerate(dirs):
+    for idx, target_dir in enumerate(dirs):
         print("\n===========================")
-        print("[{num}/{total}] {dirname}".format(dirname=target_dir, num=num + 1, total=len(dirs)))
+        print("[{idx}/{total}] {dirname}".format(dirname=target_dir, idx=idx+1, total=len(dirs)))
 
-        # setup path
+        # set path
         machine_type = os.path.split(target_dir)[1]
         model_file_path = "{model}/model_{machine_type}.hdf5".format(model=param["model_directory"],
                                                                 machine_type=machine_type)
         history_img = "{model}/history_{machine_type}.png".format(model=param["model_directory"],
                                                                   machine_type=machine_type)
 
-        # dataset generator
+        if os.path.exists(model_file_path):
+            com.logger.info("model exists")
+            continue
+
+        # generate dataset
         print("============== DATASET_GENERATOR ==============")
         files = file_list_generator(target_dir)
         train_data = list_to_vector_array(files,
@@ -173,24 +184,22 @@ if __name__ == "__main__":
                                           hop_length=param["feature"]["hop_length"],
                                           power=param["feature"]["power"])
 
-        # model training
+        # train model
         print("============== MODEL TRAINING ==============")
-        model = com.keras_model(param["feature"]["n_mels"] * param["feature"]["frames"])
+        model = keras_model.get_model(param["feature"]["n_mels"] * param["feature"]["frames"])
         model.summary()
 
-        if os.path.exists(model_file_path):
-            com.logger.info("model exists")
-        else:
-            model.compile(**param["fit"]["compile"])
-            history = model.fit(train_data,
-                                train_data,
-                                epochs=param["fit"]["epochs"],
-                                batch_size=param["fit"]["batch_size"],
-                                shuffle=param["fit"]["shuffle"],
-                                validation_split=param["fit"]["validation_split"],
-                                verbose=param["fit"]["verbose"])
-            visualizer.loss_plot(history.history["loss"], history.history["val_loss"])
-            visualizer.save_figure(history_img)
-            model.save_weights(model_file_path)
-            com.logger.info("save_model -> {}".format(model_file_path))
+        model.compile(**param["fit"]["compile"])
+        history = model.fit(train_data,
+                            train_data,
+                            epochs=param["fit"]["epochs"],
+                            batch_size=param["fit"]["batch_size"],
+                            shuffle=param["fit"]["shuffle"],
+                            validation_split=param["fit"]["validation_split"],
+                            verbose=param["fit"]["verbose"])
+        
+        visualizer.loss_plot(history.history["loss"], history.history["val_loss"])
+        visualizer.save_figure(history_img)
+        model.save(model_file_path)
+        com.logger.info("save_model -> {}".format(model_file_path))
         print("============== END TRAINING ==============")
