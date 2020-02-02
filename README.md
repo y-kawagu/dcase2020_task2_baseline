@@ -80,7 +80,7 @@ The csv files for each machine ID including the anomaly scores are saved in the 
 If the mode is "development", the script also makes the csv files including the AUCs and pAUCs for each machine ID. 
 
 ### 7. Check results
-You can check the anomaly scores for each wav files in the directory `test`.
+You can check the anomaly scores for each wav files in the directory `test`:
 
 `anomaly_score_ToyCar_id_01.csv`
 ```  
@@ -93,7 +93,8 @@ normal_id_01_00000005.wav	6.368985477
   ...
 ```
 
-Also, you can check the AUC and pAUC for each machine ID.
+Also, you can check the AUCs and pAUCs for each machine ID:
+
 `result.csv`
 ```  
 ToyCar		
