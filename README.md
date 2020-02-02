@@ -129,7 +129,7 @@ Average	    0.791556255	0.726018126
   ...
 ```
 
-### 5. Run training script for evaluation dataset (after launch)
+### 8. Run training script for evaluation dataset (after launch)
 After the evaluation dataset for training is launched, download and unzip it.
 Run the training script `00_train.py` with the option `-e`. 
 ```
@@ -137,7 +137,7 @@ $ python3.6 00_train.py -e
 ```
 The models are trained by using the evaluation dataset `eval_data`.
 
-### 6. Run test script for evaluation dataset (after launch)
+### 9. Run test script for evaluation dataset (after launch)
 After the evaluation dataset for test is launched, download and unzip it.
 Run the test script `01_test.py` with the option `-e`. 
 ```
