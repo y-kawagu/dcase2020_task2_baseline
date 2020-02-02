@@ -75,12 +75,13 @@ Use the option `-d` for the development dataset `dev_data`.
 $ python3.6 01_test.py -d
 ```
 The options for `01_test.py` are the same as those for `00_train.py`.
-`01_test.py` calculates the anomaly scores for each .wav file in . 
+`01_test.py` calculates the anomaly scores for each wav file in the directory `test`. 
 The csv files for each machine ID including the anomaly scores are saved in the directory **result/**.
 If the mode is "development", the script also makes the csv files including the AUCs and pAUCs for each machine ID. 
 
 ### 7. Check results
 You can check the anomaly scores for each wav files in the directory `test`.
+
 `anomaly_score_ToyCar_id_01.csv`
 ```  
 normal_id_01_00000000.wav	6.95342025
