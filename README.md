@@ -2,22 +2,30 @@
 DCASE2020 Challenge Task 2 baseline system (Ver.1.0.0)
 
 ## Description
-The baseline system consists of two python scripts:
+The baseline system consists of two main scripts:
 - `00_train.py`
-  - This script trains the model for each machine type by using the `train_data`.
+  - This script trains the models for each machine type by using the directory `train`.
 - `01_test.py`
-  - This script calculates the anomaly score for each .wav file
-  - If the mode is `development`, it also calculates the AUC and pAUC for each machine ID. 
+  - This script makes the csv files for each machine ID including the anomaly scores for each wav file in the directory `test`.
+  - If the mode is "development", it also makes the csv files including the AUCs and pAUCs for each machine ID. 
 
 ## Usage
 
 ### 1. Clone repository
 Clone this repository from Github.
 
-### 2. Unzip development dataset
-Download dev_data_<machine_type>.zip files from ZENODO (https://zenodo.org/record/xxxxxx).
-Unzip the downloaded files and make the directory structure as follows:
+### 2. Download development dataset (and evaluation dataset)
+We will launch the datasets in three stages. 
+So, please download the datasets in each stage:
+- Development dataset
+  - Download `dev_data_<machine_type>.zip` from https://zenodo.org/record/xxxxxx.
+- Evaluation dataset for training
+  - After launch, download `eval_data_train_<machine_type>.zip` from https://zenodo.org/record/yyyyyy.
+- Evaluation dataset for test
+  - After launch, download `eval_data_test_<machine_type>.zip` from https://zenodo.org/record/zzzzzz.
 
+### 3. Unzip dataset
+Unzip the downloaded files and make the directory structure as follows:
 - ./dcase2020_baseline
     - /dev_data
         - /ToyCar
@@ -26,7 +34,7 @@ Unzip the downloaded files and make the directory structure as follows:
         - /pump
         - /slider
         - /valve
-    - /eval_data
+    - /eval_data (after launch of the evaluation dataset)
         - /ToyCar
         - /ToyConveyor
         - /fan
@@ -36,35 +44,55 @@ Unzip the downloaded files and make the directory structure as follows:
     - /00_train.py
     - /01_test.py
     - /common.py
+    - /keras_model.py
+    - /baseline.yaml
     - /readme.md
 
-### 3. Run script for training
-| Argument                    |                                   | Description                                                  |
-| --------------------------- | --------------------------------- | ------------------------------------------------------------ |
-| `-h`                        | `--help`                          | Application help.                                            |
-| `-v`                        | `--version`                       | Show application version.                                    |
-| `-e`                        | `--eval`                          | run mode Evaluation                                          |
-| `-d`                        | `--dev`                           | run mode Development                                         |
+### 4. Change parameters
+You can change the parameters for feature extraction and model definition by editting `baseline.yaml`.
+
+### 5. Run training script
+Run the script for training `00_train.py`. 
 ```
 $ python3.6 00_train.py [option]
 ```
+Use the option `-d` for the development dataset `dev_data`.
 
-コマンドライン引数でDevelopmentかEvaluationを指定して実行してください。
+| Argument                    |                                   | Description                                                  | 
+| --------------------------- | --------------------------------- | ------------------------------------------------------------ | 
+| `-h`                        | `--help`                          | Application help.                                            | 
+| `-v`                        | `--version`                       | Show application version.                                    | 
+| `-d`                        | `--dev`                           | Mode for "development"                                       |  
+| `-e`                        | `--eval`                          | Mode for "evaluation"                                        | 
 
-00_train.pyを実行すると　**model/**　に機種ごとのmodelが作成されます。
+`00_train.py` trains the models for each machine type and saves the trained models in the directory **model/**.
 
-01_test.pyを実行すると　**result/** に個体ごとのanomaly_score_csvが作成されます。  
-Development実行時のみAUC,pAUCのresult.csvが作成されます。
+### 6. Run test script
+Run the script for test `01_test.py`.
+```
+$ python3.6 01_test.py [option]
+```
+The options for `01_test.py` are the same as those for `00_train.py`.
+Use the option `-d` for the development dataset `dev_data`.
+`01_test.py` calculates the anomaly scores for each .wav file in . 
+The csv files for each machine ID including the anomaly scores are saved in the directory **result/**.
+If the mode is "development", the script also makes the csv files including the AUCs and pAUCs for each machine ID. 
 
-パラメーターを変更する場合は、baseline.yamlを編集してください
+### 7. Check results
+You can check the anomaly scores for each wav files in the directory `test`.
+`anomaly_score_ToyCar_id_01.csv`
+```  
+normal_id_01_00000000.wav	6.95342025
+normal_id_01_00000001.wav	6.363580014
+normal_id_01_00000002.wav	7.048401741
+normal_id_01_00000003.wav	6.151557502
+normal_id_01_00000004.wav	6.450118248
+normal_id_01_00000005.wav	6.368985477
+  ...
+```
 
-- model/ : 
-	Training results are located.  
-- result/ : 
-	.csv file (default = result.csv) is located.  
-	In the file, all result AUCs and pAUCs are written.
-
-### 4. sample result
+Also, you can check the AUC and pAUC for each machine ID.
+`result.csv`
 ```  
 ToyCar		
 id	    AUC	        pAUC
@@ -99,6 +127,20 @@ Average	    0.791556255	0.726018126
 
   ...
 ```
+
+### 5. Run training script for evaluation dataset
+After the evaluation dataset for training is launched, download and unzip it.
+Run the training script `00_train.py` with the option `-e`. 
+```
+$ python3.6 00_train.py -e
+```
+The models are trained by using the evaluation dataset.
+
+### 6. Run test script for evaluation dataset
+After the evaluation dataset for test is launched, download and unzip it.
+Run the test script `01_test.py` with the option `-e`. 
+The csv files for each machine ID including the anomaly scores are saved in the directory **result/**.
+You can submit the csv files for the challenge.
 
 ## Dependency
 We develop the source code on Ubuntu 16.04 LTS and 18.04 LTS.
