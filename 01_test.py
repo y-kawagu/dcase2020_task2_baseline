@@ -62,7 +62,7 @@ def get_machine_id_list_for_test(target_dir,
     return machine_id_list
 
 
-def test_files_list_generator(target_dir,
+def test_file_list_generator(target_dir,
                               id_name,
                               dir_name="test",
                               prefix_nomal="normal",
@@ -167,7 +167,7 @@ if __name__ == "__main__":
         
         for id_str in machine_id_list:
             # load test file
-            test_files, y_true = test_files_list_generator(target_dir, id_str)
+            test_files, y_true = test_file_list_generator(target_dir, id_str)
 
             # setup anomaly score file path
             anomaly_score_csv = "{result}/anomaly_score_{machine_type}_{id_str}.csv"\
