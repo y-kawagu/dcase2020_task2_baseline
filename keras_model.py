@@ -12,7 +12,8 @@ from keras.layers import Input, Dense, BatchNormalization, Activation
 def get_model(inputDim):
     """
     define the keras model
-    the model based on the simple dense auto encoder (64*64*8*64*64)
+    the model based on the simple dense auto encoder 
+    (128*128*128*128*8*128*128*128*128)
     """
     inputLayer = Input(shape=(inputDim,))
 
