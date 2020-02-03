@@ -174,18 +174,18 @@ def file_to_vector_array(file_name,
     log_mel_spectrogram = 20.0 / power * numpy.log10(mel_spectrogram + sys.float_info.epsilon)
 
     # 04 calculate total vector size
-    vectorarray_size = len(log_mel_spectrogram[0, :]) - frames + 1
+    vector_array_size = len(log_mel_spectrogram[0, :]) - frames + 1
 
     # 05 skip too short clips
-    if vectorarray_size < 1:
+    if vector_array_size < 1:
         return numpy.empty((0, dims), float)
 
     # 06 generate feature vectors by concatenating multiframes
-    vectorarray = numpy.zeros((vectorarray_size, dims), float)
+    vector_array = numpy.zeros((vector_array_size, dims), float)
     for t in range(frames):
-        vectorarray[:, n_mels * t: n_mels * (t + 1)] = log_mel_spectrogram[:, t: t + vectorarray_size].T
+        vector_array[:, n_mels * t: n_mels * (t + 1)] = log_mel_spectrogram[:, t: t + vector_array_size].T
 
-    return vectorarray
+    return vector_array
 
 
 # load dataset

@@ -54,14 +54,14 @@ class visualizer(object):
         ax.set_title("Model loss")
         ax.set_xlabel("Epoch")
         ax.set_ylabel("Loss")
-        ax.legend(["Train", "Test"], loc="upper right")
+        ax.legend(["Train", "Validation"], loc="upper right")
 
     def save_figure(self, name):
         """
         Save figure.
 
         name : str
-            save .png file path.
+            save png file path.
 
         return : None
         """

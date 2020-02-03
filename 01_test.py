@@ -85,13 +85,13 @@ def test_file_list_generator(target_dir,
     return :
         if the mode is "development":
             test_files : list [ str ]
-                file list for evaluation
+                file list for test
             test_labels : list [ boolean ]
-                label info. list for evaluation
+                label info. list for test
                 * normal/anomaly = 0/1
         if the mode is "evaluation":
             test_files : list [ str ]
-                file list for evaluation
+                file list for test
     """
     com.logger.info("target_dir : {}".format(target_dir+"/"+id_name))
     
@@ -197,7 +197,7 @@ if __name__ == "__main__":
             com.logger.info("anomaly score result ->  {}".format(anomaly_score_csv))
 
             if mode:
-                # append AUC and pAUC into lists
+                # append AUC and pAUC to lists
                 auc = metrics.roc_auc_score(y_true, y_pred)
                 p_auc = metrics.roc_auc_score(y_true, y_pred, max_fpr=param["max_fpr"])
                 csv_lines.append([id_str.split("_", 1)[1], auc, p_auc])
