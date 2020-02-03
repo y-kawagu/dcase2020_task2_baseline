@@ -52,7 +52,7 @@ def get_model(inputDim):
     h = BatchNormalization()(h)
     h = Activation('relu')(h)
 
-    h = Dense(inputDim, activation=None)(h)
+    h = Dense(inputDim)(h)
 
     return Model(inputs=inputLayer, outputs=h)
 #########################################################################
