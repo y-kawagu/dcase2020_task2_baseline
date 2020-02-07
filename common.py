@@ -5,6 +5,7 @@
 import glob
 import argparse
 import sys
+import os
 
 # additional
 import numpy
@@ -204,10 +205,12 @@ def select_dirs(param, mode):
     """
     if mode:
         logger.info("load_directory <- development")
-        dirs = sorted(glob.glob("{base}/*".format(base=param["dev_directory"])))
+        dir_path = os.path.abspath("{base}/*".format(base=param["dev_directory"]))
+        dirs = sorted(glob.glob(dir_path))
     else:
         logger.info("load_directory <- evaluation")
-        dirs = sorted(glob.glob("{base}/*".format(base=param["eval_directory"])))
+        dir_path = os.path.abspath("{base}/*".format(base=param["eval_directory"]))
+        dirs = sorted(glob.glob(dir_path))
     return dirs
 
 ########################################################################
