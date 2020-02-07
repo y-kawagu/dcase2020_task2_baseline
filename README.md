@@ -26,7 +26,7 @@ So, please download the datasets in each stage:
 
 ### 3. Unzip dataset
 Unzip the downloaded files and make the directory structure as follows:
-- ./dcase2020_baseline
+- ./dcase2020_task2_baseline
     - /dev_data
         - /ToyCar
         - /ToyConveyor
