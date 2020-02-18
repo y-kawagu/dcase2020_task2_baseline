@@ -128,7 +128,7 @@ def file_list_generator(target_dir,
     com.logger.info("target_dir : {}".format(target_dir))
 
     # generate training list
-    training_list_path = os.path.abspath("{dir}/{dir_name}/*.{ext}/".format(dir=target_dir, dir_name=dir_name, ext=ext))
+    training_list_path = os.path.abspath("{dir}/{dir_name}/*.{ext}".format(dir=target_dir, dir_name=dir_name, ext=ext))
     files = sorted(glob.glob(training_list_path))
     if len(files) == 0: com.logger.exception(f'{"no_wav_data!!"}')
 
