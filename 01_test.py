@@ -151,11 +151,10 @@ if __name__ == "__main__":
         model_file = "{model}/model_{machine_type}.hdf5".format(model=param["model_directory"], machine_type=machine_type)
         
         # load model file
-        if os.path.exists(model_file):
-            model = keras_model.load_model(model_file)
-        else:
+        if not os.path.exists(model_file):
             com.logger.error("{} model not found ".format(machine_type))
             sys.exit(-1)
+        model = keras_model.load_model(model_file)
         model.summary()
 
         if mode:
