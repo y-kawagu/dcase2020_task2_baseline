@@ -59,16 +59,17 @@ def get_machine_id_list_for_test(target_dir,
     dir_path = os.path.abspath("{dir}/{dir_name}/*.{ext}".format(dir=target_dir, dir_name=dir_name, ext=ext))
     file_paths = sorted(glob.glob(dir_path))
     # extract id
-    machine_id_list = sorted(list(set(itertools.chain.from_iterable([re.findall('id_[0-9][0-9]', ext_id) for ext_id in file_paths]))))
+    machine_id_list = sorted(list(set(itertools.chain.from_iterable(
+        [re.findall('id_[0-9][0-9]', ext_id) for ext_id in file_paths]))))
     return machine_id_list
 
 
 def test_file_list_generator(target_dir,
-                              id_name,
-                              dir_name="test",
-                              prefix_nomal="normal",
-                              prefix_anomaly="anomaly",
-                              ext="wav"):
+                             id_name,
+                             dir_name="test",
+                             prefix_normal="normal",
+                             prefix_anomaly="anomaly",
+                             ext="wav"):
     """
     target_dir : str
         base directory path of the dev_data or eval_data
@@ -94,26 +95,42 @@ def test_file_list_generator(target_dir,
             test_files : list [ str ]
                 file list for test
     """
-    com.logger.info("target_dir : {}".format(target_dir+"/"+id_name))
-    
+    com.logger.info("target_dir : {}".format(target_dir+"_"+id_name))
+
     # development
     if mode:
-        normal_files = sorted(glob.glob("{dir}/{dir_name}/{prefix_nomal}_{id_name}*.{ext}".format(dir=target_dir, dir_name=dir_name, prefix_nomal=prefix_nomal, id_name=id_name, ext=ext)))
+        normal_files = sorted(
+            glob.glob("{dir}/{dir_name}/{prefix_normal}_{id_name}*.{ext}".format(dir=target_dir,
+                                                                                 dir_name=dir_name,
+                                                                                 prefix_normal=prefix_normal,
+                                                                                 id_name=id_name,
+                                                                                 ext=ext)))
         normal_labels = numpy.zeros(len(normal_files))
-        anomaly_files = sorted(glob.glob("{dir}/{dir_name}/{prefix_anomaly}_{id_name}*.{ext}".format(dir=target_dir, dir_name=dir_name, prefix_anomaly=prefix_anomaly, id_name=id_name, ext=ext)))
-        anormaly_labels = numpy.ones(len(anomaly_files))
+        anomaly_files = sorted(
+            glob.glob("{dir}/{dir_name}/{prefix_anomaly}_{id_name}*.{ext}".format(dir=target_dir,
+                                                                                  dir_name=dir_name,
+                                                                                  prefix_anomaly=prefix_anomaly,
+                                                                                  id_name=id_name,
+                                                                                  ext=ext)))
+        anomaly_labels = numpy.ones(len(anomaly_files))
         files = numpy.concatenate((normal_files, anomaly_files), axis=0)
-        labels = numpy.concatenate((normal_labels, anormaly_labels), axis=0)
+        labels = numpy.concatenate((normal_labels, anomaly_labels), axis=0)
         com.logger.info("test_file  num : {num}".format(num=len(files)))
-        if len(files) == 0: com.logger.exception(f'{"no_wav_data!!"}')
+        if len(files) == 0:
+            com.logger.exception("no_wav_file!!")
         print("\n========================================")
 
     # evaluation
     else:
-        files = sorted(glob.glob("{dir}/{dir_name}/*{id_name}*.{ext}".format(dir=target_dir, dir_name=dir_name, id_name=id_name, ext=ext)))
+        files = sorted(
+            glob.glob("{dir}/{dir_name}/*{id_name}*.{ext}".format(dir=target_dir,
+                                                                  dir_name=dir_name,
+                                                                  id_name=id_name,
+                                                                  ext=ext)))
         labels = None
         com.logger.info("test_file  num : {num}".format(num=len(files)))
-        if len(files) == 0: com.logger.exception(f'{"no_wav_data!!"}')
+        if len(files) == 0:
+            com.logger.exception("no_wav_file!!")
         print("\n=========================================")
 
     return files, labels
@@ -130,10 +147,10 @@ if __name__ == "__main__":
     mode = com.command_line_chk()
     if mode is None:
         sys.exit(-1)
-        
+
     # make output result directory
     os.makedirs(param["result_directory"], exist_ok=True)
-    
+
     # load base directory
     dirs = com.select_dirs(param=param, mode=mode)
 
@@ -148,8 +165,9 @@ if __name__ == "__main__":
 
         print("============== MODEL LOAD ==============")
         # set model path
-        model_file = "{model}/model_{machine_type}.hdf5".format(model=param["model_directory"], machine_type=machine_type)
-        
+        model_file = "{model}/model_{machine_type}.hdf5".format(model=param["model_directory"],
+                                                                machine_type=machine_type)
+
         # load model file
         if not os.path.exists(model_file):
             com.logger.error("{} model not found ".format(machine_type))
@@ -164,16 +182,16 @@ if __name__ == "__main__":
             performance = []
 
         machine_id_list = get_machine_id_list_for_test(target_dir)
-        
+
         for id_str in machine_id_list:
             # load test file
             test_files, y_true = test_file_list_generator(target_dir, id_str)
 
             # setup anomaly score file path
-            anomaly_score_csv = "{result}/anomaly_score_{machine_type}_{id_str}.csv"\
-                                       .format(result=param["result_directory"],
-                                               machine_type=machine_type,
-                                               id_str=id_str)
+            anomaly_score_csv = "{result}/anomaly_score_{machine_type}_{id_str}.csv".format(
+                                                                                     result=param["result_directory"],
+                                                                                     machine_type=machine_type,
+                                                                                     id_str=id_str)
             anomaly_score_list = []
 
             print("\n============== BEGIN TEST FOR A MACHINE ID ==============")
@@ -181,16 +199,16 @@ if __name__ == "__main__":
             for file_idx, file_path in tqdm(enumerate(test_files), total=len(test_files)):
                 try:
                     data = com.file_to_vector_array(file_path,
-                                                      n_mels=param["feature"]["n_mels"],
-                                                      frames=param["feature"]["frames"],
-                                                      n_fft=param["feature"]["n_fft"],
-                                                      hop_length=param["feature"]["hop_length"],
-                                                      power=param["feature"]["power"])
+                                                    n_mels=param["feature"]["n_mels"],
+                                                    frames=param["feature"]["frames"],
+                                                    n_fft=param["feature"]["n_fft"],
+                                                    hop_length=param["feature"]["hop_length"],
+                                                    power=param["feature"]["power"])
                     errors = numpy.mean(numpy.square(data - model.predict(data)), axis=1)
                     y_pred[file_idx] = numpy.mean(errors)
                     anomaly_score_list.append([os.path.basename(file_path), y_pred[file_idx]])
                 except:
-                    com.logger.error("File broken!!: {}".format(file_path))
+                    com.logger.error("file broken!!: {}".format(file_path))
 
             # save anomaly score
             save_csv(save_file_path=anomaly_score_csv, save_data=anomaly_score_list)
@@ -204,9 +222,9 @@ if __name__ == "__main__":
                 performance.append([auc, p_auc])
                 com.logger.info("AUC : {}".format(auc))
                 com.logger.info("pAUC : {}".format(p_auc))
-                
+
             print("\n============ END OF TEST FOR A MACHINE ID ============")
-                
+
         if mode:
             # calculate averages for AUCs and pAUCs
             averaged_performance = numpy.mean(numpy.array(performance, dtype=float), axis=0)

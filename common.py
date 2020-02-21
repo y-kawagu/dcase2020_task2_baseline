@@ -14,84 +14,6 @@ import librosa.core
 import librosa.feature
 import yaml
 
-# from import
-#from keras.models import Model
-#from keras.layers import Input, Dense
-########################################################################
-
-########################################################################
-# version
-########################################################################
-__versions__ = "1.0.0"
-########################################################################
-
-########################################################################
-# argparse
-########################################################################
-def command_line_chk():
-    parser = argparse.ArgumentParser(description='Without option argument, it will not run properly.')
-
-    parser.add_argument('-v', '--version', action='store_true', help="show application version")
-    parser.add_argument('-e', '--eval', action='store_true', help="run mode Evaluation")
-    parser.add_argument('-d', '--dev', action='store_true', help="run mode Development")
-
-    args = parser.parse_args()
-    if args.version:
-        print("===============================")
-        print("DCASE 2020 task 2 baseline\nversion {}".format(__versions__))
-        print("===============================\n")
-    if args.eval ^ args.dev:
-        if args.dev:
-            flag = True
-        else:
-            flag = False
-    else:
-        flag = None
-        print("incorrect argument")
-        print("please set option argument '-dev' or '-eval'")
-    return flag
-########################################################################
-
-
-########################################################################
-# load parameter.yaml
-########################################################################
-def yaml_load():
-    with open("baseline.yaml") as stream:
-        param = yaml.load(stream)
-    return param
-
-
-"""
-dev_directory : ./dev_data
-eval_directory : ./eval_data
-model_directory: ./model
-result_directory: ./result
-result_file: result.csv
-
-
-max_fpr : 0.1
-
-feature:
-  n_mels: 64
-  frames : 5
-  n_fft: 1024
-  hop_length: 512
-  power: 2.0
-
-
-fit:
-  compile:
-    optimizer : adam
-    loss : mean_squared_error
-  epochs : 100
-  batch_size : 512
-  shuffle : True
-  validation_split : 0.1
-  verbose : 1
-
-"""
-
 ########################################################################
 
 
@@ -115,6 +37,50 @@ logger.addHandler(handler)
 
 
 ########################################################################
+# version
+########################################################################
+__versions__ = "1.0.0"
+########################################################################
+
+
+########################################################################
+# argparse
+########################################################################
+def command_line_chk():
+    parser = argparse.ArgumentParser(description='Without option argument, it will not run properly.')
+    parser.add_argument('-v', '--version', action='store_true', help="show application version")
+    parser.add_argument('-e', '--eval', action='store_true', help="run mode Evaluation")
+    parser.add_argument('-d', '--dev', action='store_true', help="run mode Development")
+    args = parser.parse_args()
+    if args.version:
+        print("===============================")
+        print("DCASE 2020 task 2 baseline\nversion {}".format(__versions__))
+        print("===============================\n")
+    if args.eval ^ args.dev:
+        if args.dev:
+            flag = True
+        else:
+            flag = False
+    else:
+        flag = None
+        print("incorrect argument")
+        print("please set option argument '--dev' or '--eval'")
+    return flag
+########################################################################
+
+
+########################################################################
+# load parameter.yaml
+########################################################################
+def yaml_load():
+    with open("baseline.yaml") as stream:
+        param = yaml.safe_load(stream)
+    return param
+
+########################################################################
+
+
+########################################################################
 # file I/O
 ########################################################################
 # wav file Input
@@ -127,14 +93,14 @@ def file_load(wav_name, mono=False):
     sampling_rate : int
         audio file sampling_rate
     mono : boolean
-        When load a multi channels file and this param True, the returned data will be merged for monoral data
+        When load a multi channels file and this param True, the returned data will be merged for mono data
 
     return : numpy.array( float )
     """
     try:
         return librosa.load(wav_name, sr=None, mono=mono)
     except:
-        logger.error(f'{"file_broken or not exists!! : {}".format(wav_name)}')
+        logger.error("file_broken or not exists!! : {}".format(wav_name))
 
 
 ########################################################################
@@ -157,7 +123,7 @@ def file_to_vector_array(file_name,
 
     return : numpy.array( numpy.array( float ) )
         vector array
-        * dataset.shape = (dataset_size, fearture_vector_length)
+        * dataset.shape = (dataset_size, feature_vector_length)
     """
     # 01 calculate the number of dimensions
     dims = n_mels * frames
@@ -179,10 +145,10 @@ def file_to_vector_array(file_name,
 
     # 05 skip too short clips
     if vector_array_size < 1:
-        return numpy.empty((0, dims), float)
+        return numpy.empty((0, dims))
 
     # 06 generate feature vectors by concatenating multiframes
-    vector_array = numpy.zeros((vector_array_size, dims), float)
+    vector_array = numpy.zeros((vector_array_size, dims))
     for t in range(frames):
         vector_array[:, n_mels * t: n_mels * (t + 1)] = log_mel_spectrogram[:, t: t + vector_array_size].T
 
