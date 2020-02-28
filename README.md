@@ -1,5 +1,6 @@
 # dcase2020_task2_baseline
-DCASE2020 Challenge Task 2 baseline system (Ver.1.0.0)
+This is a baseline system for **DCASE2020 Challenge Task 2 "Unsupervised Detection of Anomalous Sounds for Machine Condition Monitoring"** 
+http://dcase.community/challenge2020/task-unsupervised-detection-of-anomalous-sounds
 
 ## Description
 The baseline system consists of two main scripts:
