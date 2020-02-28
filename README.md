@@ -6,10 +6,10 @@ http://dcase.community/challenge2020/task-unsupervised-detection-of-anomalous-so
 ## Description
 The baseline system consists of two main scripts:
 - `00_train.py`
-  - This script trains the models for each machine type by using the directory `train`.
+  - This script trains models for each Machine Type by using the directory `train`.
 - `01_test.py`
-  - This script makes the csv files for each machine ID including the anomaly scores for each wav file in the directory `test`.
-  - If the mode is "development", it also makes the csv files including the AUCs and pAUCs for each machine ID. 
+  - This script makes csv files for each Machine ID including the anomaly scores for each wav file in the directory `test`.
+  - If the mode is "development", it also makes the csv files including the AUCs and pAUCs for each Machine ID. 
 
 ## Usage
 
@@ -20,11 +20,11 @@ Clone this repository from Github.
 We will launch the datasets in three stages. 
 So, please download the datasets in each stage:
 - Development dataset
-  - Download `dev_data_<machine_type>.zip` from https://zenodo.org/record/3678171.
+  - Download `dev_data_<Machine_Type>.zip` from https://zenodo.org/record/3678171.
 - Evaluation dataset for training
-  - After launch, download `eval_data_train_<machine_type>.zip` from https://zenodo.org/record/yyyyyy (not available until Apr. 1).
+  - After launch, download `eval_data_train_<Machine_Type>.zip` from https://zenodo.org/record/yyyyyy (not available until Apr. 1).
 - Evaluation dataset for test
-  - After launch, download `eval_data_test_<machine_type>.zip` from https://zenodo.org/record/zzzzzz (not available until June. 1).
+  - After launch, download `eval_data_test_<Machine_Type>.zip` from https://zenodo.org/record/zzzzzz (not available until June. 1).
 
 ### 3. Unzip dataset
 Unzip the downloaded files and make the directory structure as follows:
@@ -51,7 +51,7 @@ Unzip the downloaded files and make the directory structure as follows:
     - /readme.md
 
 ### 4. Change parameters
-You can change the parameters for feature extraction and model definition by editting `baseline.yaml`.
+You can change the parameters for feature extraction and model definition by editing `baseline.yaml`.
 
 ### 5. Run training script (for development dataset)
 Run the training script `00_train.py`. 
@@ -68,7 +68,7 @@ Options:
 | `-d`                        | `--dev`                           | Mode for "development"                                       |  
 | `-e`                        | `--eval`                          | Mode for "evaluation"                                        | 
 
-`00_train.py` trains the models for each machine type and saves the trained models in the directory **model/**.
+`00_train.py` trains the models for each Machine Type and saves the trained models in the directory **model/**.
 
 ### 6. Run test script (for development dataset)
 Run the test script `01_test.py`.
@@ -78,8 +78,8 @@ $ python3.6 01_test.py -d
 ```
 The options for `01_test.py` are the same as those for `00_train.py`.
 `01_test.py` calculates the anomaly scores for each wav file in the directory `test`. 
-The csv files for each machine ID including the anomaly scores are saved in the directory **result/**.
-If the mode is "development", the script also makes the csv files including the AUCs and pAUCs for each machine ID. 
+The csv files for each Machine ID including the anomaly scores are saved in the directory **result/**.
+If the mode is "development", the script also makes the csv files including the AUCs and pAUCs for each Machine ID. 
 
 ### 7. Check results
 You can check the anomaly scores for each wav files in the directory `test`:
@@ -95,7 +95,7 @@ normal_id_01_00000005.wav	6.368985477
   ...
 ```
 
-Also, you can check the AUCs and pAUCs for each machine ID:
+Also, you can check the AUCs and pAUCs for each Machine ID:
 
 `result.csv`
 ```  
