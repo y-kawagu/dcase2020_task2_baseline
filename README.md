@@ -18,11 +18,11 @@ Clone this repository from Github.
 We will launch the datasets in three stages. 
 So, please download the datasets in each stage:
 - Development dataset
-  - Download `dev_data_<machine_type>.zip` from https://zenodo.org/record/xxxxxx.
+  - Download `dev_data_<machine_type>.zip` from https://zenodo.org/record/3678171.
 - Evaluation dataset for training
-  - After launch, download `eval_data_train_<machine_type>.zip` from https://zenodo.org/record/yyyyyy.
+  - After launch, download `eval_data_train_<machine_type>.zip` from https://zenodo.org/record/yyyyyy (not available until Apr. 1).
 - Evaluation dataset for test
-  - After launch, download `eval_data_test_<machine_type>.zip` from https://zenodo.org/record/zzzzzz.
+  - After launch, download `eval_data_test_<machine_type>.zip` from https://zenodo.org/record/zzzzzz (not available until June. 1).
 
 ### 3. Unzip dataset
 Unzip the downloaded files and make the directory structure as follows:
