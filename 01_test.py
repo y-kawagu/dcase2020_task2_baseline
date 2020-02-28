@@ -1,3 +1,10 @@
+"""
+ @file   01_test.py
+ @brief  Script for test
+ @author Toshiki Nakamura, Yuki Nikaido, and Yohei Kawaguchi (Hitachi Ltd.)
+ Copyright (C) 2020 Hitachi, Ltd. All right reserved.
+"""
+
 ########################################################################
 # import default python-library
 ########################################################################
