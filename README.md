@@ -31,7 +31,24 @@ Unzip the downloaded files and make the directory structure as follows:
 - ./dcase2020_task2_baseline
     - /dev_data
         - /ToyCar
-        - /ToyConveyor
+            - /train (Only normal data for all Machine IDs are included.)
+                - /normal_id_01_00000000.wav
+                - ...
+                - /normal_id_01_00000999.wav
+                - /normal_id_02_00000000.wav
+                - ...
+                - /normal_id_04_00000999.wav
+            - /test (Normal and anomaly data for all Machine IDs are included.)
+                - /normal_id_01_00000000.wav
+                - ...
+                - /normal_id_01_00000349.wav
+                - /anomaly_id_01_00000000.wav
+                - ...
+                - /anomaly_id_01_00000263.wav
+                - /normal_id_02_00000000.wav
+                - ...
+                - /anomaly_id_04_00000264.wav
+        - /ToyConveyor (The other Machine Types have the same directory structure as ToyCar.)
         - /fan
         - /pump
         - /slider
