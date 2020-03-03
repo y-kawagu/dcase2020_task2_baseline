@@ -6,9 +6,10 @@ http://dcase.community/challenge2020/task-unsupervised-detection-of-anomalous-so
 ## Description
 The baseline system consists of two main scripts:
 - `00_train.py`
-  - This script trains models for each Machine Type by using the directory `train`.
+  - This script trains models for each Machine Type by using the directory **dev_data/<Machine_Type>/train/** or **eval_data/<Machine_Type>/train/**.
 - `01_test.py`
-  - This script makes csv files for each Machine ID including the anomaly scores for each wav file in the directory `test`.
+  - This script makes csv files for each Machine ID including the anomaly scores for each wav file in the directory **dev_data/<Machine_Type>/test/** or **eval_data/<Machine_Type>/test/**.
+  - The csv files will be stored in the directory **result/**.
   - If the mode is "development", it also makes the csv files including the AUCs and pAUCs for each Machine ID. 
 
 ## Usage
@@ -72,7 +73,7 @@ You can change the parameters for feature extraction and model definition by edi
 
 ### 5. Run training script (for development dataset)
 Run the training script `00_train.py`. 
-Use the option `-d` for the development dataset `dev_data`.
+Use the option `-d` for the development dataset **dev_data/<Machine_Type>/train/**.
 ```
 $ python3.6 00_train.py -d
 ```
@@ -89,17 +90,18 @@ Options:
 
 ### 6. Run test script (for development dataset)
 Run the test script `01_test.py`.
-Use the option `-d` for the development dataset `dev_data`.
+Use the option `-d` for the development dataset **dev_data/<Machine_Type>/test/**.
 ```
 $ python3.6 01_test.py -d
 ```
 The options for `01_test.py` are the same as those for `00_train.py`.
-`01_test.py` calculates the anomaly scores for each wav file in the directory `test`. 
-The csv files for each Machine ID including the anomaly scores are saved in the directory **result/**.
+`01_test.py` calculates the anomaly scores for each wav file in the directory **dev_data/<Machine_Type>/test/**.
+The csv files for each Machine ID including the anomaly scores will be stored in the directory **result/**.
 If the mode is "development", the script also makes the csv files including the AUCs and pAUCs for each Machine ID. 
 
 ### 7. Check results
-You can check the anomaly scores for each wav files in the directory `test`:
+You can check the anomaly scores in the csv files in the directory **result/**.
+Each anomaly score corresponds to a wav file in the directory **dev_data/<Machine_Type>/test/**:
 
 `anomaly_score_ToyCar_id_01.csv`
 ```  
@@ -112,7 +114,7 @@ normal_id_01_00000005.wav	6.368985477
   ...
 ```
 
-Also, you can check the AUCs and pAUCs for each Machine ID:
+Also, you can check the AUC and pAUC scores for each Machine ID:
 
 `result.csv`
 ```  
@@ -166,19 +168,22 @@ Average		0.664557	0.506004
 
 ### 8. Run training script for evaluation dataset (after launch)
 After the evaluation dataset for training is launched, download and unzip it.
+Move it to **eval_data/<Machine_Type>/train/**.
 Run the training script `00_train.py` with the option `-e`. 
 ```
 $ python3.6 00_train.py -e
 ```
-The models are trained by using the evaluation dataset `eval_data`.
+Models are trained by using the evaluation dataset **eval_data/<Machine_Type>/train/**.
 
 ### 9. Run test script for evaluation dataset (after launch)
 After the evaluation dataset for test is launched, download and unzip it.
+Move it to **eval_data/<Machine_Type>/test/**.
 Run the test script `01_test.py` with the option `-e`. 
 ```
 $ python3.6 01_test.py -e
 ```
-The anomaly scores are calculated using the evaluation dataset `eval_data`, and the anomaly scores are saved as csv files in the directory **result/**.
+Anomaly scores are calculated using the evaluation dataset **eval_data/<Machine_Type>/test/**.
+The anomaly scores are stored as csv files in the directory **result/**.
 You can submit the csv files for the challenge.
 
 ## Dependency
