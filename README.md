@@ -22,9 +22,9 @@ We will launch the datasets in three stages.
 So, please download the datasets in each stage:
 - Development dataset
   - Download `dev_data_<Machine_Type>.zip` from https://zenodo.org/record/3678171.
-- Evaluation dataset for training
+- Evaluation dataset for training ("additional training dataset" in the official task description)
   - After launch, download `eval_data_train_<Machine_Type>.zip` from https://zenodo.org/record/yyyyyy (not available until Apr. 1).
-- Evaluation dataset for test
+- Evaluation dataset for test ("evaluation dataset" in the official task description)
   - After launch, download `eval_data_test_<Machine_Type>.zip` from https://zenodo.org/record/zzzzzz (not available until June. 1).
 
 ### 3. Unzip dataset
@@ -54,9 +54,23 @@ Unzip the downloaded files and make the directory structure as follows:
         - /pump
         - /slider
         - /valve
-    - /eval_data (after launch of the evaluation dataset)
+    - /eval_data (after launch of each dataset)
         - /ToyCar
-        - /ToyConveyor
+            - /train (Unzipped "additional training dataset." Only normal data for all Machine IDs are included.)
+                - /normal_id_05_00000000.wav
+                - ...
+                - /normal_id_05_00000999.wav
+                - /normal_id_06_00000000.wav
+                - ...
+                - /normal_id_07_00000999.wav
+            - /test (Unzipped "evaluation dataset." Normal and anomaly data for all Machine IDs are included, but there is no label about normal or anomaly.)
+                - /id_05_00000000.wav
+                - ...
+                - /id_05_00000411.wav
+                - /id_06_00000000.wav
+                - ...
+                - /id_07_00000411.wav
+        - /ToyConveyor (The other machine types have the same directory structure as ToyCar.)
         - /fan
         - /pump
         - /slider
