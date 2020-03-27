@@ -54,7 +54,7 @@ Unzip the downloaded files and make the directory structure as follows:
         - /pump
         - /slider
         - /valve
-    - /eval_data (after launch)
+    - /eval_data (Add this directory after launch)
         - /ToyCar
             - /train (Unzipped "additional training dataset". Only normal data for all Machine IDs are included.)
                 - /normal_id_05_00000000.wav
