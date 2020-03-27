@@ -10,7 +10,7 @@ The baseline system consists of two main scripts:
 - `01_test.py`
   - This script makes csv files for each Machine ID including the anomaly scores for each wav file in the directory **dev_data/<Machine_Type>/test/** or **eval_data/<Machine_Type>/test/**.
   - The csv files will be stored in the directory **result/**.
-  - If the mode is "development", it also makes the csv files including the AUCs and pAUCs for each Machine ID. 
+  - If the mode is "development", it also makes the csv files including the AUC and pAUC for each Machine ID. 
 
 ## Usage
 
@@ -22,9 +22,9 @@ We will launch the datasets in three stages.
 So, please download the datasets in each stage:
 - Development dataset
   - Download `dev_data_<Machine_Type>.zip` from https://zenodo.org/record/3678171.
-- Evaluation dataset for training ("additional training dataset" in the official task description)
-  - After launch, download `eval_data_train_<Machine_Type>.zip` from https://zenodo.org/record/yyyyyy (not available until Apr. 1).
-- Evaluation dataset for test ("evaluation dataset" in the official task description)
+- "Additional training dataset", i.e. the evaluation dataset for training
+  - After launch, download `eval_data_train_<Machine_Type>.zip` from https://zenodo.org/record/3727685 (not available until April. 1).
+- "Evaluation dataset", i.e. the evaluation for test
   - After launch, download `eval_data_test_<Machine_Type>.zip` from https://zenodo.org/record/zzzzzz (not available until June. 1).
 
 ### 3. Unzip dataset
@@ -54,16 +54,16 @@ Unzip the downloaded files and make the directory structure as follows:
         - /pump
         - /slider
         - /valve
-    - /eval_data (after launch of each dataset)
+    - /eval_data (after launch)
         - /ToyCar
-            - /train (Unzipped "additional training dataset." Only normal data for all Machine IDs are included.)
+            - /train (Unzipped "additional training dataset". Only normal data for all Machine IDs are included.)
                 - /normal_id_05_00000000.wav
                 - ...
                 - /normal_id_05_00000999.wav
                 - /normal_id_06_00000000.wav
                 - ...
                 - /normal_id_07_00000999.wav
-            - /test (Unzipped "evaluation dataset." Normal and anomaly data for all Machine IDs are included, but there is no label about normal or anomaly.)
+            - /test (Unzipped "evaluation dataset". Normal and anomaly data for all Machine IDs are included, but there is no label about normal or anomaly.)
                 - /id_05_00000000.wav
                 - ...
                 - /id_05_00000411.wav
@@ -180,25 +180,26 @@ id		AUC		pAUC
 Average		0.664557	0.506004
 ```
 
-### 8. Run training script for evaluation dataset (after launch)
-After the evaluation dataset for training is launched, download and unzip it.
+### 8. Run training script for "additional training dataset" (after April 1)
+After the "additional training dataset" is launched, download and unzip it.
 Move it to **eval_data/<Machine_Type>/train/**.
 Run the training script `00_train.py` with the option `-e`. 
 ```
 $ python3.6 00_train.py -e
 ```
-Models are trained by using the evaluation dataset **eval_data/<Machine_Type>/train/**.
+Models are trained by using the "additional training dataset" **eval_data/<Machine_Type>/train/**.
 
-### 9. Run test script for evaluation dataset (after launch)
-After the evaluation dataset for test is launched, download and unzip it.
+### 9. Run test script for "evaluation dataset" (after June 1)
+After the "evaluation dataset" for test is launched, download and unzip it.
 Move it to **eval_data/<Machine_Type>/test/**.
 Run the test script `01_test.py` with the option `-e`. 
 ```
 $ python3.6 01_test.py -e
 ```
-Anomaly scores are calculated using the evaluation dataset **eval_data/<Machine_Type>/test/**.
+Anomaly scores are calculated using the "evaluation dataset" **eval_data/<Machine_Type>/test/**.
 The anomaly scores are stored as csv files in the directory **result/**.
 You can submit the csv files for the challenge.
+From the submitted csv files, we will calculate the AUCs, pAUCs, and your ranking.
 
 ## Dependency
 We develop the source code on Ubuntu 16.04 LTS and 18.04 LTS.
