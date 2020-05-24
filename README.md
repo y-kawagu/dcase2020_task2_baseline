@@ -25,7 +25,7 @@ So, please download the datasets in each stage:
 - "Additional training dataset", i.e. the evaluation dataset for training
   - After launch, download `eval_data_train_<Machine_Type>.zip` from https://zenodo.org/record/3727685 (not available until April. 1).
 - "Evaluation dataset", i.e. the evaluation for test
-  - After launch, download `eval_data_test_<Machine_Type>.zip` from https://zenodo.org/record/zzzzzz (not available until June. 1).
+  - After launch, download `eval_data_test_<Machine_Type>.zip` from https://zenodo.org/record/3841772 (not available until June. 1).
 
 ### 3. Unzip dataset
 Unzip the downloaded files and make the directory structure as follows:
@@ -66,10 +66,10 @@ Unzip the downloaded files and make the directory structure as follows:
             - /test (Unzipped "evaluation dataset". Normal and anomaly data for all Machine IDs are included, but there is no label about normal or anomaly.)
                 - /id_05_00000000.wav
                 - ...
-                - /id_05_00000411.wav
+                - /id_05_00000514.wav
                 - /id_06_00000000.wav
                 - ...
-                - /id_07_00000411.wav
+                - /id_07_00000514.wav
         - /ToyConveyor (The other machine types have the same directory structure as ToyCar.)
         - /fan
         - /pump
